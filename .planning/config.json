@@ -1,0 +1,16 @@
+{
+  "mode": "interactive",
+  "model_profile": "quality",
+  "verification": {
+    "command": "npm --prefix frontend run build"
+  },
+  "git": {
+    "branching": false,
+    "atomic_commits": false
+  },
+  "rules": {
+    "responsive_first": true,
+    "mandatory_viewports": [360, 390, 540, 768, 1024, 1440, 1882],
+    "lazy_senior_dev": true
+  }
+}
