@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { ChevronDown, ArrowUpRight, Lock, Server, Terminal } from 'lucide-react';
+import { ChevronDown, ArrowUpRight, Lock, Server } from 'lucide-react';
 import projects from '../data/projects';
 import personal from '../data/personal';
 import Button from '../components/Button';
+import ProjectCard from '../components/ProjectCard';
 
 // Verified implementation scope notes matching strict audit constraints
 const projectScopeNotes = {
@@ -52,7 +53,7 @@ export default function Projects() {
         </div>
 
         {/* Project Case Studies List */}
-        <div className="space-y-6 sm:space-y-8">
+        <div className="space-y-8 sm:space-y-12">
           {projects.map((project) => {
             const isExpanded = expandedId === project.id;
             const scopeInfo = projectScopeNotes[project.id] || {
@@ -61,56 +62,11 @@ export default function Projects() {
             };
 
             return (
-              <article
-                key={project.id}
-                className="overflow-hidden rounded-xl border border-paper-border bg-paper transition-all hover:border-ink/60 shadow-xs"
-              >
-                {/* Main Project Row */}
-                <div className="p-6 sm:p-8 md:p-10">
-                  <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
-                    {/* Project Number & Meta (3 cols) */}
-                    <div className="lg:col-span-3">
-                      <div className="flex items-center gap-3">
-                        <span className="font-display text-3xl sm:text-4xl font-extrabold text-ink select-none">
-                          {project.number}
-                        </span>
-                        <div>
-                          <p className="font-mono text-xs text-ink-muted uppercase">
-                            {project.category}
-                          </p>
-                          <span className="mt-1 inline-flex items-center rounded-sm border border-paper-border bg-paper-card px-2 py-0.5 font-mono text-[10px] sm:text-[11px] font-semibold text-ink">
-                            {project.statusBadge}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 flex flex-wrap gap-1.5">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded border border-paper-border bg-paper-card px-2 py-0.5 font-mono text-[10px] text-ink-muted"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Title & Description (6 cols) */}
-                    <div className="lg:col-span-6">
-                      <h2 className="font-display text-2xl sm:text-3xl font-bold uppercase tracking-tight text-ink">
-                        {project.title}
-                      </h2>
-                      <p className="mt-1 font-serif text-sm italic text-ink-soft">
-                        {project.tagline}
-                      </p>
-                      <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-                        {project.description}
-                      </p>
-                    </div>
-
-                    {/* Actions & Toggle (3 cols) */}
-                    <div className="lg:col-span-3 flex lg:flex-col lg:items-end justify-between items-center gap-3 pt-4 border-t border-paper-border/60 lg:border-t-0 lg:pt-0">
+              <div key={project.id} className="space-y-4">
+                <ProjectCard
+                  project={project}
+                  actionSlot={
+                    <div className="w-full flex flex-wrap items-center justify-between gap-3">
                       <span className="font-mono text-xs text-ink-muted">
                         Status: <span className="font-semibold text-ink">{project.status}</span>
                       </span>
@@ -119,7 +75,7 @@ export default function Projects() {
                         type="button"
                         id={`toggle-${project.id}`}
                         onClick={() => toggleExpand(project.id)}
-                        className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-paper-border bg-paper-card px-4 py-2 font-mono text-xs font-semibold text-ink hover:border-ink transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-paper-border bg-paper px-4 py-2 font-mono text-xs font-semibold text-ink hover:border-ink transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                         aria-expanded={isExpanded}
                         aria-controls={`case-study-${project.id}`}
                       >
@@ -132,8 +88,8 @@ export default function Projects() {
                         />
                       </button>
                     </div>
-                  </div>
-                </div>
+                  }
+                />
 
                 {/* Case Study Details Accordion */}
                 <AnimatePresence>
@@ -150,7 +106,7 @@ export default function Projects() {
                           ? { duration: 0 }
                           : { duration: 0.28, ease: [0.16, 1, 0.3, 1] }
                       }
-                      className="border-t border-paper-border bg-paper-muted p-6 sm:p-8 md:p-10 space-y-6 sm:space-y-8"
+                      className="overflow-hidden rounded-xl border border-paper-border bg-paper-muted p-6 sm:p-8 md:p-10 space-y-6 sm:space-y-8"
                     >
                       {/* Section 1: Problem vs. Approach Asymmetric Grid */}
                       <div className="grid gap-6 md:grid-cols-2">
@@ -181,49 +137,7 @@ export default function Projects() {
                         </div>
                       </div>
 
-                      {/* Section 2: Sequential System Flow Visualizer */}
-                      <div className="rounded-lg border border-paper-border bg-paper-card p-5 sm:p-6">
-                        <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-paper-border/60 pb-3">
-                          <div>
-                            <p className="font-mono text-xs uppercase tracking-wider text-ink-muted font-semibold">
-                              System Architecture
-                            </p>
-                            <h3 className="font-display text-base font-bold uppercase tracking-tight text-ink">
-                              Dataflow & Execution Pipeline
-                            </h3>
-                          </div>
-                          <span className="font-mono text-[11px] text-ink-muted">
-                            {project.architecture.length} Sequential Stages
-                          </span>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                          {project.architecture.map((step, sIdx) => {
-                            const stepNumber = String(sIdx + 1).padStart(2, '0');
-                            return (
-                              <div
-                                key={sIdx}
-                                className="relative rounded-md border border-paper-border bg-paper p-4 flex flex-col justify-between"
-                              >
-                                <div>
-                                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-ink-muted">
-                                    Stage {stepNumber}
-                                  </span>
-                                  <p className="mt-2 text-xs sm:text-sm font-medium leading-relaxed text-ink">
-                                    {step}
-                                  </p>
-                                </div>
-                                <div className="mt-4 flex items-center gap-1.5 font-mono text-[10px] text-ink-muted">
-                                  <Terminal size={12} className="opacity-60" />
-                                  <span>Step {stepNumber}</span>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Section 3: Scope Notes & Access Boundaries */}
+                      {/* Section 2: Scope Notes & Access Boundaries */}
                       <div className="rounded-lg border border-paper-border bg-paper-card p-5 sm:p-6">
                         <div className="grid gap-6 md:grid-cols-12 md:items-center">
                           {/* Scope notes (8 cols) */}
@@ -252,7 +166,7 @@ export default function Projects() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </article>
+              </div>
             );
           })}
         </div>

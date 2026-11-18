@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import Hero from '../components/Hero';
+import MarqueeTicker from '../components/MarqueeTicker';
 import IntroManifesto from '../components/IntroManifesto';
 import FeaturedProjectsPreview from '../components/FeaturedProjectsPreview';
 import Button from '../components/Button';
@@ -12,13 +13,16 @@ export default function Home() {
       {/* 1. Hero Experience */}
       <Hero />
 
-      {/* 2. Intro Statement & Focus Areas */}
+      {/* 2. Technology Stack Marquee */}
+      <MarqueeTicker />
+
+      {/* 3. Intro Statement & Focus Areas */}
       <IntroManifesto />
 
-      {/* 3. Featured Projects Showcase */}
+      {/* 4. Featured Projects Showcase */}
       <FeaturedProjectsPreview />
 
-      {/* 4. Closing Call to Action */}
+      {/* 5. Closing Call to Action */}
       <section className="section-padding relative border-b border-paper-border bg-paper text-ink">
         <div className="section-container text-center">
           <motion.div

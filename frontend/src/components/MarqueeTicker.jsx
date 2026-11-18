@@ -1,41 +1,115 @@
+import { useReducedMotion } from 'framer-motion';
+
+const technologies = [
+  'Python',
+  'React',
+  'FastAPI',
+  'PostgreSQL',
+  'Next.js',
+  'Tailwind CSS',
+  'Node.js',
+  'Prisma ORM',
+  'RAG Systems',
+  'Vector Search',
+  'Groq API',
+];
+
 export default function MarqueeTicker() {
-  const items = [
-    'Digital Chaos',
-    'Controlled Precision',
-    'Algorithmic Rigor',
-    'Intelligent Systems',
-    'Creative Engineering',
-    'Full-Stack Architecture',
-    'Curiosity Driven',
-  ];
+  const shouldReduceMotion = useReducedMotion();
+
+  // Accessible, static layout for users who prefer reduced motion
+  if (shouldReduceMotion) {
+    return (
+      <section
+        aria-label="Technology Stack"
+        className="w-full border-y border-paper-border bg-paper-muted py-4 px-4 sm:px-6"
+      >
+        <div className="section-container">
+          <ul
+            role="list"
+            className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2.5 text-center"
+          >
+            {technologies.map((tech, i) => (
+              <li
+                key={tech}
+                className="inline-flex items-center gap-2.5 font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-ink"
+              >
+                <span>{tech}</span>
+                {i < technologies.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      i % 2 === 0 ? 'bg-accent' : 'bg-cobalt'
+                    }`}
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <div className="relative w-full overflow-hidden border-y border-ink bg-ink py-4 text-paper select-none">
-      <div className="flex w-max animate-marquee">
-        {/* First track */}
-        <div className="flex items-center gap-8 shrink-0 pr-8">
-          {items.map((text, i) => (
-            <div key={`track1-${i}`} className="flex items-center gap-8">
-              <span className="font-display text-lg sm:text-2xl font-bold uppercase tracking-wider">
-                {text}
-              </span>
-              <span className="inline-block h-2.5 w-2.5 rounded-full bg-accent" />
-            </div>
-          ))}
-        </div>
+    <section
+      aria-label="Technology Stack"
+      className="relative w-full overflow-hidden border-y border-paper-border bg-paper-muted py-3.5 sm:py-4 select-none"
+    >
+      {/* Edge gradient masks for subtle entry and exit transitions */}
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 z-10 bg-gradient-to-r from-paper-muted to-transparent"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-16 z-10 bg-gradient-to-l from-paper-muted to-transparent"
+        aria-hidden="true"
+      />
 
-        {/* Second duplicate track for seamless infinite scroll */}
-        <div className="flex items-center gap-8 shrink-0 pr-8" aria-hidden="true">
-          {items.map((text, i) => (
-            <div key={`track2-${i}`} className="flex items-center gap-8">
-              <span className="font-display text-lg sm:text-2xl font-bold uppercase tracking-wider">
-                {text}
+      <div
+        className="flex w-max animate-marquee hover:[animation-play-state:paused] active:[animation-play-state:paused]"
+        style={{ animationDuration: '32s' }}
+      >
+        {/* Primary Semantic Track */}
+        <ul
+          role="list"
+          className="flex items-center gap-6 sm:gap-8 shrink-0 pr-6 sm:pr-8"
+        >
+          {technologies.map((tech, i) => (
+            <li key={`track1-${tech}`} className="flex items-center gap-6 sm:gap-8">
+              <span className="font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-ink">
+                {tech}
               </span>
-              <span className="inline-block h-2.5 w-2.5 rounded-full bg-cobalt" />
-            </div>
+              <span
+                aria-hidden="true"
+                className={`inline-block h-1.5 w-1.5 rounded-full ${
+                  i % 2 === 0 ? 'bg-accent' : 'bg-cobalt'
+                }`}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
+
+        {/* Duplicated Track for Seamless Infinite Scroll */}
+        <ul
+          role="list"
+          aria-hidden="true"
+          className="flex items-center gap-6 sm:gap-8 shrink-0 pr-6 sm:pr-8"
+        >
+          {technologies.map((tech, i) => (
+            <li key={`track2-${tech}`} className="flex items-center gap-6 sm:gap-8">
+              <span className="font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider text-ink">
+                {tech}
+              </span>
+              <span
+                className={`inline-block h-1.5 w-1.5 rounded-full ${
+                  i % 2 === 0 ? 'bg-accent' : 'bg-cobalt'
+                }`}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+    </section>
   );
 }
